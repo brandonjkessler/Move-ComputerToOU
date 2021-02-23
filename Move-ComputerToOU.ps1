@@ -7,12 +7,20 @@
 
 
     .PARAMETER RegistryPath
+    The Path in the registry where the key to query for will be located.
 
     .PARAMETER RegistryKey
+    The key in the registry that is queried against.
 
     .PARAMETER RootOUPath
+    The path that devices are placed in, but before the OU that's in the registry.  
+    Example: the Domain is some.company.org with an OU called 'Devices' under it.  
+    The RootOUPath parameter would then be "Devices".
 
     .PARAMETER RegistryOU
+    The name of the property in the RegistryKey that's being queried against.  
+    Example: if the registry Key property is "OrganizationalUnit" then the parameter would be that.  
+    Default is OU
 
     .PARAMETER AssetFamily
 
