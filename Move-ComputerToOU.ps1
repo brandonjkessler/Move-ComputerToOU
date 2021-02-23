@@ -32,15 +32,22 @@
 
 param(
     [parameter(ValueFromPipelineByPropertyName,
-    HelpMessage='Path to registry where the key will be created. Default is HKLM:\SOFTWARE')][string]$RegistryPath = 'HKLM:\SOFTWARE',
+    HelpMessage='Path to registry where the key will be created. Default is HKLM:\SOFTWARE')]
+    [string]$RegistryPath = 'HKLM:\SOFTWARE',
     [parameter(ValueFromPipelineByPropertyName,
-    HelpMessage='Registry where values will be written. Default is CustomInv')][string]$RegistryKey = 'CustomInv',
+    HelpMessage='Registry where values will be written. Default is CustomInv')]
+    [string]$RegistryKey = 'CustomInv',
     [parameter(ValueFromPipelineByPropertyName,
-    HelpMessage='Root OU that devices are in, not including AD Root. Default is Devices')][string]$RootOUPath = 'Devices',
+    HelpMessage='Root OU that devices are in, not including AD Root. Default is Devices')]
+    [string]$RootOUPath = 'Devices',
     [parameter(ValueFromPipelineByPropertyName,
-    HelpMessage='Registry Key Property where OU value is written. Default is OU')][string]$RegistryOU = 'OU',
+    HelpMessage='Registry Key Property where OU value is written. Default is OU')]
+    [string]$RegistryOU = 'OU',
     [parameter(ValueFromPipelineByPropertyName,
-    HelpMessage='Registry Key Property where Asset Family value is written. Default is AssetFamily')][string]$AssetFamily = 'AssetFamily'
+    HelpMessage='Registry Key Property where Asset Family value is written. Default is AssetFamily')]
+    [string]$AssetFamily = 'AssetFamily',
+    [parameter(HelpMessage='Registry Key Property where Asset Family value is written. Default is AssetFamily')]
+    [string]$WhatIf
 )
 
 $Registry = "$RegistryPath\$RegistryKey"
@@ -87,4 +94,8 @@ Switch($DeviceType){
     'Desktop'{$DestinationOU = "OU=Desktops,$DestinationOU"}
 }
 
-Return $DestinationOU
+if($WhatIf -eq $true){
+    Return $DestinationOU
+} else {
+    Get-ADComputer -Identity $env:COMPUTERNAME | Move-ADObject -TargetPath $DestinationOU
+}
