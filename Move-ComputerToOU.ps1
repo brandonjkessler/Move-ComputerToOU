@@ -46,8 +46,10 @@ param(
     [parameter(ValueFromPipelineByPropertyName,
     HelpMessage='Registry Key Property where Asset Family value is written. Default is AssetFamily')]
     [string]$AssetFamily = 'AssetFamily',
-    [parameter(HelpMessage='Registry Key Property where Asset Family value is written. Default is AssetFamily')]
-    [string]$WhatIf
+    [parameter(HelpMessage='If set, returns value and does not move device.')]
+    [switch]$WhatIf,
+    [parameter(HelpMessage='Task Sequence Variable to use if running under a task sequence.')]
+    [string]$TSVariable
 )
 
 $Registry = "$RegistryPath\$RegistryKey"
@@ -97,5 +99,10 @@ Switch($DeviceType){
 if($WhatIf -eq $true){
     Return $DestinationOU
 } else {
-    Get-ADComputer -Identity $env:COMPUTERNAME | Move-ADObject -TargetPath $DestinationOU
+    Try{
+        $TSEnv = New-Object -ComObject Microsoft.SMS.TSEnvironment
+        $TSEnv.Value("$TSVariable") = $DestinationOU
+    }Catch{
+        Get-ADComputer -Identity $env:COMPUTERNAME | Move-ADObject -TargetPath $DestinationOU
+    }
 }
