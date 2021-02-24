@@ -1,4 +1,3 @@
-#Requires -RunAsAdministrator
 <#
     .SYNOPSIS
 
@@ -84,7 +83,10 @@ Get-ItemProperty -Path $Registry | ForEach-Object {
 }
 
 ## Get Domain and Start OU Path
-$DestinationOU = (Get-ADDomain).DistinguishedName
+$Root = [ADSI]"LDAP://RootDSE"
+$DestinationOU = $Root.Get("rootDomainNamingContext")
+
+
 
 ## Test if Parameter has / in it and split if needed to create multiple OU entries in $DestinationOU
 if($RootOUPath -match '/'){
