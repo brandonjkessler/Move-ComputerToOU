@@ -111,6 +111,10 @@ if($WhatIf -eq $true){
         $TSEnv = New-Object -ComObject Microsoft.SMS.TSEnvironment
         $TSEnv.Value("$TSVariable") = $DestinationOU
     }Catch{
-        Get-ADComputer -Identity $env:COMPUTERNAME | Move-ADObject -TargetPath $DestinationOU
+        ## Inspired by https://social.technet.microsoft.com/forums/scriptcenter/en-US/37ab13a4-4ddb-460a-8a6a-0eac5887e0c0/using-adsi-and-ldap-to-move-to-an-ou
+        $SystemInfo = New-Object -ComObject "ADSystemInfo"
+        $ComputerDN = $SystemInfo.GetType().InvokeMember("ComputerName", "GetProperty", $Null, $SystemInfo, $Null)
+        $Computer = [ADSI]"LDAP://$ComputerDN"
+        $Computer.psbase.MoveTo($([ADSI]"LDAP://$DestinationOU")) 
     }
 }
