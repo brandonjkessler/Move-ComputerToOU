@@ -40,23 +40,30 @@
 param(
     [parameter(ValueFromPipelineByPropertyName,
     HelpMessage='Path to registry where the key will be created. Default is HKLM:\SOFTWARE')]
-    [string]$RegistryPath = 'HKLM:\SOFTWARE',
+    [string]
+    $RegistryPath = 'HKLM:\SOFTWARE',
     [parameter(ValueFromPipelineByPropertyName,
     HelpMessage='Registry where values will be written. Default is CustomInv')]
-    [string]$RegistryKey = 'CustomInv',
+    [string]
+    $RegistryKey = 'CustomInv',
     [parameter(ValueFromPipelineByPropertyName,
     HelpMessage='Root OU that devices are in, not including AD Root. Default is Devices')]
-    [string]$RootOUPath = 'Devices',
+    [string]
+    $RootOUPath = 'Devices',
     [parameter(ValueFromPipelineByPropertyName,
     HelpMessage='Registry Key Property where OU value is written. Default is OU')]
-    [string]$RegistryOU = 'OU',
+    [string]
+    $RegistryOU = 'OU',
     [parameter(ValueFromPipelineByPropertyName,
     HelpMessage='Registry Key Property where Asset Family value is written. Default is AssetFamily')]
-    [string]$AssetFamily = 'AssetFamily',
+    [string]
+    $AssetFamily = 'AssetFamily',
     [parameter(HelpMessage='If set, returns value and does not move device.')]
-    [switch]$WhatIf,
+    [switch]
+    $WhatIf,
     [parameter(HelpMessage='Task Sequence Variable to use if running under a task sequence.')]
-    [string]$TSVariable
+    [string]
+    $TSVariable
 )
 
 $Registry = "$RegistryPath\$RegistryKey"
