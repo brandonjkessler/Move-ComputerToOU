@@ -111,6 +111,7 @@ $DestinationOU = "OU=$OU,$DestinationOU"
 Switch($DeviceType){
     'Mobile'{$DestinationOU = "OU=Laptops,$DestinationOU"}
     'Desktop'{$DestinationOU = "OU=Desktops,$DestinationOU"}
+    Default{$DestinationOU = "OU=$DeviceType,$DestinationOU"}
 }
 
 if($WhatIf -eq $true){
